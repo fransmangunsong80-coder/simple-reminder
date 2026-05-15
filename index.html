@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 JANGAN LUPA STREAK BUUUU 🔥</title>
+    <title>Reminder</title>
     <style>
         * {
             margin: 0;
@@ -123,28 +123,24 @@
     </div>
 
     <script>
-        function activateReminder() {
-            // Vibration selama 2 detik (pola: on 100ms, off 100ms, diulang)
-            const pattern = [];
-            for (let i = 0; i < 20; i++) {
-                pattern.push(100, 100);
-            }
-            
+        // Fungsi untuk getar selama 2 detik
+        function vibrateFor2Seconds() {
             if (navigator.vibrate) {
+                // Pola: on 200ms, off 100ms, diulang selama 2 detik
+                const pattern = [];
+                for (let i = 0; i < 6; i++) {
+                    pattern.push(200, 100);
+                }
                 navigator.vibrate(pattern);
             }
+        }
 
-            // Text to speech "API API"
-            const utterance = new SpeechSynthesisUtterance("API API");
-            utterance.rate = 1.5;
-            utterance.pitch = 1.2;
-            utterance.volume = 1;
-            speechSynthesis.speak(utterance);
-
-            // Audio beep menggunakan Web Audio API
+        // Fungsi untuk play suara "API API"
+        function playSoundAPI() {
+            // Gunakan Web Audio API untuk membuat suara
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             
-            // 5 kali beep untuk "API API API API API"
+            // 5 kali beep
             for (let i = 0; i < 5; i++) {
                 setTimeout(() => {
                     const oscillator = audioContext.createOscillator();
@@ -164,23 +160,42 @@
                 }, i * 300);
             }
 
-            // Browser notification
-            if (Notification.permission === 'granted') {
-                new Notification('🔥 Heeiiiii 🔥', {
-                    body: 'JANGAN LUPA STREAK BUUUU!!!',
-                    icon: '🔥'
-                });
-            } else if (Notification.permission !== 'denied') {
-                Notification.requestPermission();
+            // Text to speech "API API"
+            try {
+                const utterance = new SpeechSynthesisUtterance("API API");
+                utterance.rate = 1.5;
+                utterance.pitch = 1.2;
+                utterance.volume = 1;
+                window.speechSynthesis.speak(utterance);
+            } catch (e) {
+                console.log("Text to speech tidak tersedia");
             }
         }
 
-        // Jalankan reminder otomatis saat halaman loaded
+        // Jalankan saat halaman dimuat
         window.addEventListener('load', () => {
-            setTimeout(activateReminder, 500);
+            // Getar langsung
+            vibrateFor2Seconds();
+            
+            // Suara setelah 500ms
+            setTimeout(() => {
+                playSoundAPI();
+            }, 500);
+
+            // Browser notification
+            if ('Notification' in window) {
+                if (Notification.permission === 'granted') {
+                    new Notification('🔥 Heeiiiii 🔥', {
+                        body: 'JANGAN LUPA STREAK BUUUU!!!',
+                        icon: '🔥'
+                    });
+                } else if (Notification.permission !== 'denied') {
+                    Notification.requestPermission();
+                }
+            }
         });
 
-        // Request notification permission on load
+        // Request notification permission
         if ('Notification' in window && Notification.permission === 'default') {
             Notification.requestPermission();
         }
