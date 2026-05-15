@@ -122,103 +122,48 @@
         <p class="subtitle">⏳ Sedang mengingatkanmu...</p>
     </div>
 
-    <audio id="alarmSound" preload="auto">
-        <source src="data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==" type="audio/wav">
-    </audio>
-
     <script>
-        function startReminder() {
-            // 1. GETAR LANGSUNG KUAT
-            if (navigator.vibrate) {
-                navigator.vibrate([300, 100, 300, 100, 300, 100, 300]);
-            }
-
-            // 2. SUARA BEEP KUAT
+        function playAPISound() {
             try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                // Gunakan Web Speech API untuk text-to-speech
+                const utterance = new SpeechSynthesisUtterance("API API API");
                 
-                // 5 beep yang kuat
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        const oscillator = audioContext.createOscillator();
-                        const gainNode = audioContext.createGain();
-                        
-                        oscillator.connect(gainNode);
-                        gainNode.connect(audioContext.destination);
-                        
-                        oscillator.frequency.value = 1000;
-                        oscillator.type = 'square';
-                        
-                        gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-                        
-                        oscillator.start(audioContext.currentTime);
-                        oscillator.stop(audioContext.currentTime + 0.4);
-                    }, i * 400);
-                }
+                // Setting untuk suara yang jelas
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                utterance.lang = 'id-ID';
+                
+                // Cancel any previous speech
+                window.speechSynthesis.cancel();
+                
+                // Speak the text
+                window.speechSynthesis.speak(utterance);
+                
+                console.log("Speaking: API API API");
             } catch (e) {
-                console.log("Audio error:", e);
-            }
-
-            // 3. TEXT TO SPEECH "API API"
-            setTimeout(() => {
-                try {
-                    const utterance = new SpeechSynthesisUtterance("API API API");
-                    utterance.rate = 1.2;
-                    utterance.pitch = 1.5;
-                    utterance.volume = 1;
-                    window.speechSynthesis.cancel();
-                    window.speechSynthesis.speak(utterance);
-                } catch (e) {
-                    console.log("TTS error:", e);
-                }
-            }, 500);
-
-            // 4. BROWSER NOTIFICATION
-            if ('Notification' in window) {
-                if (Notification.permission === 'granted') {
-                    new Notification('🔥 JANGAN LUPA API BUUUU 🔥', {
-                        body: 'JANGAN LUPA STREAK BUUUU!!!',
-                        icon: '🔥',
-                        tag: 'reminder',
-                        requireInteraction: true
-                    });
-                } else if (Notification.permission !== 'denied') {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === 'granted') {
-                            new Notification('🔥 JANGAN LUPA API BUUUU 🔥', {
-                                body: 'JANGAN LUPA STREAK BUUUU!!!',
-                                icon: '🔥',
-                                tag: 'reminder',
-                                requireInteraction: true
-                            });
-                        }
-                    });
-                }
+                console.error("Error playing sound:", e);
             }
         }
 
-        // JALANKAN OTOMATIS SAAT HALAMAN DIBUKA
+        // Jalankan saat halaman dibuka
         document.addEventListener('DOMContentLoaded', () => {
-            startReminder();
+            setTimeout(() => {
+                playAPISound();
+            }, 500);
         });
 
-        // JUGA JALANKAN SAAT WINDOW LOAD
+        // Backup - jalankan juga saat window load
         window.addEventListener('load', () => {
-            startReminder();
+            setTimeout(() => {
+                playAPISound();
+            }, 500);
         });
 
-        // REQUEST PERMISSION OTOMATIS
-        if ('Notification' in window && Notification.permission === 'default') {
-            Notification.requestPermission();
-        }
-
-        // GETAR LAGI SETELAH 1 DETIK
-        setTimeout(() => {
-            if (navigator.vibrate) {
-                navigator.vibrate([200, 100, 200, 100, 200]);
-            }
-        }, 1000);
+        // Ulangi suara setiap 3 detik
+        setInterval(() => {
+            playAPISound();
+        }, 3000);
     </script>
 </body>
 </html>
