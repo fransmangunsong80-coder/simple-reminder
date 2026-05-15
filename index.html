@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 Menyalakan Api di TikTok 🔥</title>
+    <title>🔥 JANGAN LUPA STREAK BUUUU 🔥</title>
     <style>
         * {
             margin: 0;
@@ -82,7 +82,7 @@
         }
 
         .message {
-            font-size: 1.5em;
+            font-size: 1.8em;
             color: #ff6b6b;
             font-weight: bold;
             margin: 30px 0;
@@ -98,81 +98,6 @@
             }
         }
 
-        .button-container {
-            display: flex;
-            gap: 15px;
-            flex-direction: column;
-            margin-top: 30px;
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .alarm-btn {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-            color: white;
-            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
-        }
-
-        .alarm-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.6);
-        }
-
-        .alarm-btn:active {
-            transform: translateY(-1px);
-        }
-
-        .copy-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .copy-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
-        }
-
-        .copy-btn:active {
-            transform: translateY(-1px);
-        }
-
-        .copy-feedback {
-            display: none;
-            background: #4caf50;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-size: 0.9em;
-        }
-
-        .copy-feedback.show {
-            display: block;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         .subtitle {
             color: #666;
             font-size: 1em;
@@ -182,7 +107,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🔥 REMINDER 🔥</h1>
+        <h1>🔥 Heeiiiii 🔥</h1>
         
         <div class="fire-container">
             <div class="fire">🔥</div>
@@ -191,90 +116,69 @@
         </div>
 
         <div class="message">
-            MENYALAKAN API DI TIKTOK!!!
+            JANGAN LUPA STREAK BUUUU
         </div>
 
-        <div class="button-container">
-            <button class="alarm-btn" onclick="playAlarm()">🔔 KLIK UNTUK ALARM!</button>
-            <button class="copy-btn" onclick="copyLink()">📋 COPY LINK INI</button>
-        </div>
-
-        <div class="copy-feedback" id="feedback">
-            ✅ Link sudah dicopy! Silakan share ke teman
-        </div>
-
-        <p class="subtitle">Kirim link ini ke teman untuk surprise mereka! 😄</p>
+        <p class="subtitle">⏳ Sedang mengingatkanmu...</p>
     </div>
 
     <script>
-        function playAlarm() {
-            // Vibration
+        function activateReminder() {
+            // Vibration selama 2 detik (pola: on 100ms, off 100ms, diulang)
+            const pattern = [];
+            for (let i = 0; i < 20; i++) {
+                pattern.push(100, 100);
+            }
+            
             if (navigator.vibrate) {
-                navigator.vibrate([200, 100, 200, 100, 200]);
+                navigator.vibrate(pattern);
             }
 
-            // Audio using Web Audio API
+            // Text to speech "API API"
+            const utterance = new SpeechSynthesisUtterance("API API");
+            utterance.rate = 1.5;
+            utterance.pitch = 1.2;
+            utterance.volume = 1;
+            speechSynthesis.speak(utterance);
+
+            // Audio beep menggunakan Web Audio API
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             
-            // Buat alarm sound
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            // Set frequency (lebih tinggi = lebih nyaring)
-            oscillator.frequency.value = 800;
-            oscillator.type = 'sine';
-            
-            // Set volume
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.5);
-
-            // Repeat alarm 3 times
-            for (let i = 1; i < 3; i++) {
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-                
-                osc.connect(gain);
-                gain.connect(audioContext.destination);
-                
-                osc.frequency.value = 800;
-                osc.type = 'sine';
-                
-                gain.gain.setValueAtTime(0.3, audioContext.currentTime + (i * 0.6));
-                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + (i * 0.6) + 0.5);
-                
-                osc.start(audioContext.currentTime + (i * 0.6));
-                osc.stop(audioContext.currentTime + (i * 0.6) + 0.5);
+            // 5 kali beep untuk "API API API API API"
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = 800;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                }, i * 300);
             }
 
             // Browser notification
             if (Notification.permission === 'granted') {
-                new Notification('🔥 REMINDER 🔥', {
-                    body: 'MENYALAKAN API DI TIKTOK!!!',
+                new Notification('🔥 Heeiiiii 🔥', {
+                    body: 'JANGAN LUPA STREAK BUUUU!!!',
                     icon: '🔥'
                 });
             } else if (Notification.permission !== 'denied') {
                 Notification.requestPermission();
             }
-
-            alert('🔥 MENYALAKAN API DI TIKTOK!!! 🔥');
         }
 
-        function copyLink() {
-            const link = window.location.href;
-            navigator.clipboard.writeText(link).then(() => {
-                const feedback = document.getElementById('feedback');
-                feedback.classList.add('show');
-                setTimeout(() => {
-                    feedback.classList.remove('show');
-                }, 3000);
-            });
-        }
+        // Jalankan reminder otomatis saat halaman loaded
+        window.addEventListener('load', () => {
+            setTimeout(activateReminder, 500);
+        });
 
         // Request notification permission on load
         if ('Notification' in window && Notification.permission === 'default') {
